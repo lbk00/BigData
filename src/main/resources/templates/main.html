@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인터랙티브 메뉴</title>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .navbar { background-color: mediumseagreen; padding: 10px; text-align: center; }
+        .sidebar { width: 200px; background-color: darkseagreen; color: white; padding: 0px; float: left; }
+        .sidebar button { background-color: darkseagreen; color: white; border: none; width: 100%; padding-top: 10px; height: 50px; padding-bottom: 30px;
+            margin-top: -10px; transition: background-color 0.3s; }
+        .sidebar button:hover, .sidebar button.active { background-color: seagreen; }
+        .content { display: flex; margin-left: 210px; padding-left: 20px; flex-direction: column;  }
+        .iframe-container { flex: 1; padding: 10px; }
+        .iframe-container iframe { width: 100%; height: 50vh; border: none; }
+    </style>
+</head>
+<body>
+
+<div class="navbar" style="padding:10px; margin-bottom: 10px;">
+    <text style="font-size: 20px">다차원적 접근을 통한 공연 예매 데이터 분석</text>
+</div>
+<div style="border:1px solid; padding-left:10px; padding-right:10px; padding-top: 20px; color: darkgrey;">
+    <div class="sidebar">
+        <button onclick="changeContent('Function1', this)">다수의 사람이 선호하는 장르</button>
+        <button onclick="changeContent('Function2', this)">성별에 따른 장르 선호도</button>
+        <button onclick="changeContent('Function3', this)">연령대 별 장르 선호도</button>
+        <button onclick="changeContent('Function4', this)">평일과 주말의 예매율 차이</button>
+        <button onclick="changeContent('Function5', this)">가격과 연령대의 상관관계</button>
+        <button onclick="changeContent('Function6', this)">장르별 좌석 환불율</button>
+        <button onclick="changeContent('Function7', this)">계절별 공연 예매율</button>
+        <button onclick="changeContent('Function8', this)">공연장별 평균 공연 연속일 수</button>
+        <button onclick="changeContent('Function9', this)">학기 중간고사와 기말고사 시기의 공연 예매율 변화</button>
+        <button onclick="changeContent('Function10', this)">사용된 데이터</button>
+    </div>
+
+    <div class="content" id="contentArea">
+        <div class="iframe-container">
+            <iframe id="functionIframe1" src="sample.html" frameborder="0"></iframe>
+        </div>
+        <div class="iframe-container">
+            <iframe id="functionIframe2" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <script type='text/javascript'>
+        function changeContent(functionName, button) {
+            // 모든 버튼에서 active 클래스 제거
+            var buttons = document.querySelectorAll('.sidebar button');
+            buttons.forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            // 클릭된 버튼에 active 클래스 추가
+            button.classList.add('active');
+
+            const iframeSrc1 = getIframeSrc(functionName);
+            const iframeSrc2 = getIframeSrc(functionName); // Function2에 대한 두 번째 iframe 소스
+            document.getElementById("functionIframe1").src = iframeSrc1;
+            if (functionName == 'Function2') {
+                document.getElementById("functionIframe2").src = "https://charts.mongodb.com/charts-project-0-pfxbjqz/embed/charts?id=664d68a2-dad8-4f06-839b-eb9e9870b0b1&maxDataAge=3600&theme=light&autoRefresh=true";
+            } else {
+                document.getElementById("functionIframe2").src = '';
+            }
+            const contentDiv = document.getElementById("contentArea");
+            if (functionName === 'Function2') {
+                contentDiv.style.flexDirection = 'row'; // 세로로 나누기
+            } else {
+                contentDiv.style.flexDirection = 'column'; // 기본 가로로 나누기
+            }
+        }
+
+        // 기능에 따라 iframe 소스 반환
+        function getIframeSrc(functionName) {
+            switch (functionName) {
+                case 'Function1':
+                    return 'https://charts.mongodb.com/charts-project-0-pfxbjqz/embed/charts?id=664d496e-886e-4a09-869b-70e3e00a2dca&maxDataAge=3600&theme=light&autoRefresh=true';
+                case 'Function2':
+                    return 'https://charts.mongodb.com/charts-project-0-pfxbjqz/embed/charts?id=664d6859-62ad-4b78-8a4a-7c58f84140be&maxDataAge=3600&theme=light&autoRefresh=true';
+                case 'Function3':
+                    return 'https://charts.mongodb.com/charts-project-0-pfxbjqz/embed/charts?id=6659ac57-94a0-4655-8a2b-eef57615c19f&maxDataAge=3600&theme=light&autoRefresh=true';
+                case 'Function4':
+                    return 'https://charts.mongodb.com/charts-project-0-pfxbjqz/embed/charts?id=665d5f9b-3075-481a-80c5-b01bb5dfe3be&maxDataAge=3600&theme=light&autoRefresh=true';
+                case 'Function5':
+                    return 'https://charts.mongodb.com/charts-project-0-pfxbjqz/embed/charts?id=6653f7d7-bcc1-4488-8529-70211d0953aa&maxDataAge=3600&theme=light&autoRefresh=true';
+                case 'Function6':
+                    return 'https://charts.mongodb.com/charts-project-0-pfxbjqz/embed/charts?id=66544412-4ae7-4d31-8996-12caaa45ec37&maxDataAge=3600&theme=light&autoRefresh=true';
+                case 'Function7':
+                    return 'https://charts.mongodb.com/charts-project-0-pfxbjqz/embed/charts?id=665d5fdc-ba34-45af-8cd3-f37a2adf3161&maxDataAge=3600&theme=light&autoRefresh=true';
+                case 'Function8':
+                    return '';
+                case 'Function9':
+                    return 'sample.html';
+                case 'Function10':
+                    return 'sample.html';
+                // 추가 기능에 대한 소스 추가
+                default:
+                    return '';
+            }
+        }
+    </script>
+</div>
+</body>
+</html>
